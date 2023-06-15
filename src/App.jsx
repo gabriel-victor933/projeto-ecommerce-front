@@ -1,11 +1,12 @@
 import { BrowserRouter,Routes,Route } from "react-router-dom"
 import {Suspense, lazy} from "react"
+import Header from './components/Header'
 
 function App() {
 
   return (
     <BrowserRouter>
-    <div>header</div>
+    <Header />
     <Suspense fallback={<div>Loading...</div>}>
       <Routes>
         <Route path="/" element={<div>initial</div>} />
