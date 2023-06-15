@@ -2,13 +2,13 @@ import {styled} from "styled-components"
 import Section from "../style/Section"
 import { useEffect, useState } from "react"
 import img from "../assets/img/logo.avif"
-import {BsSearch, BsBag} from "react-icons/bs"
+import {BsSearch, BsBag, BsList} from "react-icons/bs"
 import { IconContext } from "react-icons"
 import { NavLink } from "react-router-dom"
 
 export default function Header() {
 
-    const [isMobile,setIsMobile] = useState(false)
+    const [isMobile,setIsMobile] = useState(window.innerWidth < 990)
 
     useEffect(() => {
         window.addEventListener("resize",windowChange)
@@ -28,7 +28,7 @@ export default function Header() {
 
   return (
     <HeaderSection>
-        <IconContext.Provider value={{color:"white", size: "21px", className: "icons"}}>
+        <IconContext.Provider value={{color:"white", size: "22px", className: "icons"}}>
             {isMobile ? <MobileHeader /> : <DesktopHeader />}
         </IconContext.Provider>
     </HeaderSection>
@@ -37,7 +37,14 @@ export default function Header() {
 
 function MobileHeader(){
     return (
-        <div className="mobile">Mobile</div>
+        <div className="mobile">
+            <BsList />
+            <img src={img} alt="logo"/>
+            <div>
+                <BsSearch />
+                <BsBag />
+            </div>
+        </div>
     )
 }
 
@@ -105,10 +112,25 @@ const HeaderSection = styled(Section)`
     }
 
     .mobile {
+        width: 100%;
+        height: 80px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
 
+
+        img {
+            width: 120px;
+            max-width: 35%;
+        }
     }
 
-    .icons:hover{
+
+
+    .icons{
+        margin: 0px 5px;
+    &:hover{
         transform: scale(1.15);
-    }
+
+    }}
 `
