@@ -1,6 +1,6 @@
 import {styled} from "styled-components"
 import Section from "../style/Section"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import img from "../assets/img/logo.avif"
 import {BsSearch, BsBag, BsList} from "react-icons/bs"
 import { IconContext } from "react-icons"
@@ -9,7 +9,7 @@ import { NavLink, useNavigate } from "react-router-dom"
 export default function Header() {
 
     const [isMobile,setIsMobile] = useState(window.innerWidth < 990)
-
+    const [isUp, setIsUp] = useState(false)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -19,6 +19,22 @@ export default function Header() {
             window.removeEventListener("resize",windowChange)
         }
     },[])
+
+    useEffect(()=>{
+        
+        window.addEventListener("scroll",handleScroll)
+
+        return ()=> {
+            window.removeEventListener("scroll",handleScroll)
+
+        }
+    })
+
+    let currentScroll = window.pageYOffset;
+    function handleScroll(e){
+        currentScroll > window.pageYOffset ? setIsUp(false) : setIsUp(true);
+        currentScroll = window.pageYOffset;
+    }
     
     function windowChange(){
         if(window.innerWidth > 990){
@@ -29,9 +45,9 @@ export default function Header() {
     }
 
   return (
-    <HeaderSection>
+    <HeaderSection isup={isUp ? `transform: translateY(-100%)`: undefined}>
         <IconContext.Provider value={{color:"white", size: "22px", className: "icons"}}>
-            {isMobile ? <MobileHeader navigate={navigate}/> : <DesktopHeader navigate={navigate}/>}
+            {isMobile ? <MobileHeader navigate={navigate} /> : <DesktopHeader navigate={navigate}/>}
         </IconContext.Provider>
     </HeaderSection>
   )
@@ -72,8 +88,9 @@ function DesktopHeader({navigate}){
 const HeaderSection = styled(Section)`
     background-color: var(--tertiary-color);
     position: fixed;
-    top: 0px;
-    
+    top: 0;
+    transition: transform 0.3s ease-out;
+
     .desktop {
         padding: 15px 0px;
         height: 155px;
@@ -122,14 +139,11 @@ const HeaderSection = styled(Section)`
         justify-content: space-between;
         align-items: center;
 
-
         img {
             width: 120px;
             max-width: 35%;
         }
     }
-
-
 
     .icons{
         margin: 0px 5px;
@@ -137,4 +151,6 @@ const HeaderSection = styled(Section)`
         transform: scale(1.15);
 
     }}
+
+    ${(props) => props.isup}
 `
