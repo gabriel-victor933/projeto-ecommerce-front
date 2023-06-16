@@ -4,11 +4,13 @@ import { useEffect, useState } from "react"
 import img from "../assets/img/logo.avif"
 import {BsSearch, BsBag, BsList} from "react-icons/bs"
 import { IconContext } from "react-icons"
-import { NavLink } from "react-router-dom"
+import { NavLink, useNavigate } from "react-router-dom"
 
 export default function Header() {
 
     const [isMobile,setIsMobile] = useState(window.innerWidth < 990)
+
+    const navigate = useNavigate()
 
     useEffect(() => {
         window.addEventListener("resize",windowChange)
@@ -29,17 +31,17 @@ export default function Header() {
   return (
     <HeaderSection>
         <IconContext.Provider value={{color:"white", size: "22px", className: "icons"}}>
-            {isMobile ? <MobileHeader /> : <DesktopHeader />}
+            {isMobile ? <MobileHeader navigate={navigate}/> : <DesktopHeader navigate={navigate}/>}
         </IconContext.Provider>
     </HeaderSection>
   )
 }
 
-function MobileHeader(){
+function MobileHeader({navigate}){
     return (
         <div className="mobile">
             <BsList />
-            <img src={img} alt="logo"/>
+            <img src={img} alt="logo"  onClick={() => navigate("/")}/>
             <div>
                 <BsSearch />
                 <BsBag />
@@ -48,12 +50,12 @@ function MobileHeader(){
     )
 }
 
-function DesktopHeader(){
+function DesktopHeader({navigate}){
     return (
         <div className="desktop">
             <div className="title">
                 <BsSearch />
-                <img src={img} alt="logo" />
+                <img src={img} alt="logo" onClick={() => navigate("/")}/>
                 <BsBag />
             </div>
             <div className="menu">
@@ -69,6 +71,8 @@ function DesktopHeader(){
 
 const HeaderSection = styled(Section)`
     background-color: var(--tertiary-color);
+    position: fixed;
+    top: 0px;
     
     .desktop {
         padding: 15px 0px;

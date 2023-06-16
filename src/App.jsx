@@ -1,6 +1,7 @@
 import { BrowserRouter,Routes,Route } from "react-router-dom"
 import {Suspense, lazy} from "react"
 import Header from './components/Header'
+import Footer from './components/Footer'
 
 function App() {
 
@@ -9,7 +10,7 @@ function App() {
     <Header />
     <Suspense fallback={<div>Loading...</div>}>
       <Routes>
-        <Route path="/" element={<div>initial</div>} />
+        <Route path="/" element={<div style={{height: "800px"}}>initial</div>} />
         <Route path="/hair" element={<div>hair</div>} />
         <Route path="/body" element={<div>body</div>} />
         <Route path="/face" element={<div>face</div>} />
@@ -19,7 +20,7 @@ function App() {
         <Route path="/checkout" element={<div>checkout</div>} />
       </Routes>
       </Suspense>
-      <div>Footer</div>
+      <Footer />
     </BrowserRouter>
   )
 }
